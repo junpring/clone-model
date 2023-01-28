@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="userEntity" type="io.junpring.coupang.entities.member.UserEntity"*/-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>쿠팡!</title>
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css">
+    <link th:href="@{/resources/stylesheets/common.css}" rel="stylesheet">
+    <link th:href="@{/shopping/resources/stylesheet/order.css}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/597b19c344.js" crossorigin></script>
+</head>
+<body>
+<th:block th:replace="~{fragments/header.html :: content}"></th:block>
+<span class="title">구매해주셔서 감사드립니다.</span>
+<span class="subtitle">자세한 구매 내역은 마이쿠팡 페이지를 참고해주세요.</span>
+<div class="buttons">
+    <a class="button back" th:href="@{/}">계속 쇼핑하기</a>
+    <a class="button order" th:href="@{/user/my}">마이쿠팡</a>
+</div>
+</body>
+</html>

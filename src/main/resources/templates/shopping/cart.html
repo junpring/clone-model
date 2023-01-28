@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" th:href="@{/resources/stylesheets/common.css}">
+    <link rel="stylesheet" th:href="@{/shopping/resources/stylesheet/cart.css}">
+    <title>장바구니</title>
+
+</head>
+<body>
+<a th:href="@{/}" class="logo-container">
+    <img class="logo" alt="Coupang" th:src="@{/resources/images/logo.png}">
+</a>
+<table>
+    <thead>
+    <tr>
+        <th></th>
+        <th>상품정보</th>
+        <th>상품금액</th>
+        <th>배송비</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="pair : ${pairList}"
+        th:with="cartEntity=${pair.getLeft()}, productEntity=${pair.getRight()}">
+        <td>
+            <img class="thumbnail" th:src="@{/product/detail/thumbnail (id=${productEntity.getThumbnailId()})}">
+        </td>
+        <td>
+            <div th:text="${productEntity.getTitle()}"></div>
+            <div class="detail" th:with="dt = ${#dates.createNow()}">
+                <span class="due" style="color: black;"
+                      th:if="${productEntity.getDelivery().equals('normal')}"
+                      th:with="tomorrow = ${T(org.apache.commons.lang3.time.DateUtils).addDays(dt, 2)}"
+                      th:text="${#dates.format(tomorrow, 'M/d') + '(' + #dates.dayOfWeekName(tomorrow).substring(0, 1) + ') 도착 예정'}"></span>
+                <span class="due" th:if="${productEntity.getDelivery().equals('rocket')}"
+                      th:with="tomorrow = ${T(org.apache.commons.lang3.time.DateUtils).addDays(dt, 1)}"
+                      th:text="${#dates.format(tomorrow, 'M/d') + '(' + #dates.dayOfWeekName(tomorrow).substring(0, 1) + ') 도착 보장'}"></span>
+                <span class="due" th:if="${productEntity.getDelivery().equals('rocketFresh')}"
+                      th:with="tomorrow = ${T(org.apache.commons.lang3.time.DateUtils).addDays(dt, 1)}"
+                      th:text="${#dates.format(tomorrow, 'M/d') + '(' + #dates.dayOfWeekName(tomorrow).substring(0, 1) + ') 새벽 도착 보장'}"></span>
+                <span class="spring"></span>
+                <span th:text="${#numbers.formatInteger(productEntity.getPrice(), 0, 'COMMA') + '원'}"></span>
+                <span th:text="${cartEntity.getCount() + '개'}"></span>
+                <span th:text="${#numbers.formatInteger(productEntity.getPrice() * cartEntity.getCount(), 0, 'COMMA') + '원'}"></span>
+                <a th:href="@{/shopping/cart/delete (index=${cartEntity.getIndex()})}" onclick="return confirm('정말로 해당 상품을 장바구니에서 삭제할까요?')">삭제</a>
+            </div>
+        </td>
+        <td class="spaced">
+            <div th:text="${#numbers.formatInteger(productEntity.getPrice() * cartEntity.getCount(), 0, 'COMMA') + '원'}"></div>
+            <img alt="로켓배송" class="rocket" th:src="@{/resources/images/rocket.png}"
+                 th:if="${productEntity.getDelivery().equals('rocket')}">
+            <img alt="로켓프레시" class="rocket" th:src="@{/resources/images/rocket-fresh.png}"
+                 th:if="${productEntity.getDelivery().equals('rocketFresh')}">
+        </td>
+        <td class="spaced">
+            <span class="fee" th:if="${productEntity.getDelivery().equals('normal')}">배송비 3,000원</span>
+            <span class="fee" th:if="${productEntity.getDelivery().equals('rocket') || productEntity.getDelivery().equals('rocketFresh')}">무료배송</span>
+        </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="4">
+            <div class="wrapper">
+                <span>상품가격</span>
+                <span class="value" th:text="${#numbers.formatInteger(totalProduct, 0, 'COMMA') + '원'}"></span>
+                <span class="sign">+</span>
+                <span>배송비</span>
+                <span class="value" th:text="${#numbers.formatInteger(totalShipping, 0, 'COMMA') + '원'}"></span>
+                <span class="sign">=</span>
+                <span>주문금액</span>
+                <span class="value" th:text="${#numbers.formatInteger(total, 0, 'COMMA') + '원'}"></span>
+            </div>
+        </td>
+    </tr>
+    </tfoot>
+</table>
+<form class="buttons" onsubmit="return confirm('정말로 장바구니에 담긴 모든 상품을 구매할까요?')" method="post" th:action="@{/shopping/order}">
+    <a class="button back" th:href="@{/}">계속 쇼핑하기</a>
+    <input class="button order" type="submit" value="구매하기" th:href="@{/shopping/order}">
+</form>
+</body>
+</html>

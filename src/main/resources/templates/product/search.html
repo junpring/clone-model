@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>검색</title>
+</head>
+<body>
+<main class="main">
+    <aside class="aside">
+        <a th:href="@{/ (category=0)}" class="category">전체 보기</a>
+        <a th:each="category : ${categoryEntities}" th:text="${category.getName()}" th:href="@{/ (category=${category.getIndex()})}" class="category"></a>
+    </aside>
+    <section class="content">
+        <section class="controller">
+            <a class="link selected" href="#">이름순</a>
+            <a class="link" href="#">낮은가격순</a>
+            <a class="link" href="#">높은가격순</a>
+            <span class="spring"></span>
+            <a class="link" th:href="@{/product/add}" th:if="${userEntity != null && userEntity.isAdmin() == true}">상품 등록</a>
+        </section>
+
+
+
+
+
+
+
+
+
+
+        <div class="page">
+            <a th:href="@{'/?page=' + ${productPageVo.getMinPage()}}"
+               th:if="${productPageVo.getRequestPage() > productPageVo.getMinPage()}">
+                <i class="fa-solid fa-angles-left"></i>
+            </a>
+            <a th:href="@{'/?page=' + ${productPageVo.getRequestPage() - 1}}"
+               th:if="${productPageVo.getRequestPage() > productPageVo.getMinPage()}"><i
+                    class="fa-solid fa-angle-left"></i>
+            </a>
+            <th:block th:each="page : ${#numbers.sequence(productPageVo.getStartPage(), productPageVo.getEndPage())}">
+                <!--${#numbers.sequence(1 , 9) page로 1 ~ 9까지 반복-->
+                <a th:href="@{'/?page=' + ${page}}"
+                   th:text="${page}"
+                   th:style="${page == productPageVo.getRequestPage()} ? 'border: 1px solid rgb(3, 17, 43)': ''">
+                </a>
+            </th:block>
+
+            <a th:href="@{'/?page=' + ${productPageVo.getRequestPage() + 1}}"
+               th:if="${productPageVo.getRequestPage() < productPageVo.getMaxPage()}">
+                <i class="fa-solid fa-angle-right"></i>
+            </a>
+            <a th:href="@{'/?page=' + ${productPageVo.getMaxPage()}}"
+               th:if="${productPageVo.getRequestPage() < productPageVo.getMaxPage()}">
+                <i class="fa-solid fa-angles-right"></i>
+            </a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,235 @@
+@charset "UTF-8";
+
+body > .main {
+    width: var(--content-max-width);
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+body > .main > .aside {
+    align-items: stretch;
+    border: 0.0625rem solid rgb(229, 229, 229);
+    border-top: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-right: 1rem;
+    padding: 1rem;
+}
+
+body > .main > .aside > .category:hover {
+    text-decoration: underline;
+}
+
+body > .main > .aside > .category + .category {
+    margin-top: 0.5rem;
+}
+
+body > .main > .content {
+    flex: 1;
+}
+
+/*page*/
+body > .main > .content > .page {
+    border-top: 0.0625rem solid rgb(238, 238, 238);
+    padding-top: 1.825rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+body > .main > .content > .page > a {
+    margin: 0.4rem;
+    padding: 0rem 0.3rem 0rem 0.3rem;
+    color: rgb(66, 132, 243);
+}
+
+body > .main > .content > .page > a:hover {
+    color: rgb(3, 17, 43);
+
+}
+
+/*page--------*/
+
+body > .main > .content > .controller {
+    background-color: rgb(239, 239, 239);
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+}
+
+body > .main > .content > .controller > .spring {
+    flex: 1;
+}
+
+body > .main > .content > .controller > .link:hover {
+    color: rgb(66, 132, 243);
+}
+
+body > .main > .content > .controller > .link.selected {
+    color: rgb(66, 132, 243);
+    cursor: default;
+    font-weight: 500;
+    pointer-events: none;
+}
+
+body > .main > .content > .controller > .link + .link {
+    margin-left: 0.5rem;
+}
+
+body > .main > .content > .products {
+    display: grid;
+    grid-gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 2rem;
+}
+
+body > .main > .content > .products > .no-product {
+    grid-column: 1/4;
+    /*grid-column-start: 1;*/
+    /*grid-column-end: 4;*/
+    padding: 2rem 0;
+    text-align: center;
+}
+
+body > .main > .content > .products > .product {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+body > .main > .content > .products > .product > .image {
+    width: 100%;
+    margin-bottom: 0.75rem;
+}
+
+body > .main > .content > .products > .product > .image:hover {
+    border: 1px solid rgb(238, 238, 238);
+}
+
+body > .main > .content > .products > .product > .no-image {
+    align-items: center;
+    background-color: rgb(220, 220, 220);
+    box-sizing: border-box;
+    color: rgb(140, 140, 140);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1rem;
+    margin-bottom: 0.75rem;
+    padding: calc(50% - 0.5rem) 0;
+}
+
+body > .main > .content > .products > .product > .no-image:hover {
+    border: 1px solid rgb(238, 238, 238);
+
+}
+
+body > .main > .content > .products > .product > .title {
+    flex: 1;
+    margin-bottom: 0.5rem;
+    text-align: justify;
+}
+
+body > .main > .content > .products > .product:hover > .title {
+    color: rgb(66, 132, 243);
+}
+
+body > .main > .content > .products > .product > .price {
+    align-items: center;
+    color: rgb(174, 0, 0);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 0.2rem;
+}
+
+body > .main > .content > .products > .product.sold-out > .price {
+    color: rgb(200, 200, 200);
+}
+
+body > .main > .content > .products > .product > .price > .number {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+body > .main > .content > .products > .product > .price > .rocket {
+    height: 1.125rem;
+    margin-left: 0.5rem;
+}
+
+body > .main > .content > .products > .product.sold-out > .price > .rocket {
+    filter: opacity(33%);
+}
+
+body > .main > .content > .products > .product > .due {
+    color: rgb(0, 137, 26);
+    margin-bottom: 0.375rem;
+}
+
+body > .main > .content > .products > .product > .stars {
+    color: rgb(205, 205, 205);
+    letter-spacing: -0.125rem;
+}
+
+body > .main > .content > .products > .product > .stars > .star-container {
+    position: relative;
+}
+
+body > .main > .content > .products > .product > .stars > .star-container > .stars {
+    letter-spacing: -0.125rem;
+    display: inline-block;
+}
+body > .main > .content > .products > .product > .stars > .star-container > .stars.gray {
+    position: relative;
+}
+
+body > .main > .content > .products > .product > .stars > .star-container > .stars.yellow {
+    left: 0;
+    width: 50%;
+    color: rgb(255, 151, 0);
+    position: absolute;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+body > .main > .content > .products > .product > .stars .review-count {
+    color: rgb(160, 160, 160);
+    letter-spacing: 0;
+    font-size: 0.8rem;
+    margin-left: 0.25rem;
+}
+
+body > .main > .content > .products > .product > .stars.one > .star.one {
+    color: rgb(255, 151, 0);
+}
+
+body > .main > .content > .products > .product > .stars.two > .star.two {
+    color: rgb(255, 151, 0);
+}
+
+body > .main > .content > .products > .product > .stars.three > .star.three {
+    color: rgb(255, 151, 0);
+}
+
+body > .main > .content > .products > .product > .stars.four > .star.four {
+    color: rgb(255, 151, 0);
+}
+
+body > .main > .content > .products > .product > .stars.five > .star.five {
+    color: rgb(255, 151, 0);
+}
+
+
+
+
+

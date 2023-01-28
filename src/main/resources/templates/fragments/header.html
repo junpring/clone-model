@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="categoryEntities" type="io.junpring.coupang.entities.product.CategoryEntity"*/-->
+<header class="header" th:fragment="content">
+    <div class="top-bar">
+        <ul class="list">
+            <li class="item">
+                <a class="link" href="#">즐겨찾기</a>
+            </li>
+            <li class="item">
+                <a class="link" href="#">입점신청</a>
+            </li>
+            <li class="spring"></li>
+            <li class="item" th:if="${userEntity == null}">
+                <a class="link" th:href="@{/user/login}">로그인</a>
+            </li>
+            <li class="item" th:if="${userEntity == null}">
+                <a class="link" th:href="@{/user/register}">회원가입</a>
+            </li>
+            <li class="item" th:if="${userEntity != null}">
+                <b class="link" th:text="${userEntity.getName()}"></b>
+                <span>님</span>
+            </li>
+            <li class="item" th:if="${userEntity != null}">
+                <a class="link" th:href="@{/user/logout}">로그아웃</a>
+            </li>
+            <li class="item">
+                <a class="link" href="#">고객센터</a>
+            </li>
+        </ul>
+    </div>
+    <div class="search">
+        <a class="logo-container" th:href="@{/}">
+            <img alt="Coupang" class="logo" src="/resources/images/logo.png">
+        </a>
+        <form class="search-form" th:action="@{/product/search}" method="get">
+            <label>
+                <span hidden>검색 기준</span>
+                <select class="search-select" name="criteria">
+                    <option value="all" selected>전체</option>
+
+                    <option
+                            th:each="category : ${categoryEntities}"
+                            th:value="${category.index}"
+                            th:text="${category.getName()}">
+                    </option>
+                </select>
+            </label>
+            <label class="keyword-input-container">
+                <span hidden>검색어</span>
+                <input class="keyword-input" maxlength="50" name="keyword" placeholder="찾고 싶은 상품을 검색해보세요!" type="text">
+            </label>
+            <button class="search-button">
+                <i class="icon fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
+        <ul class="my">
+            <li class="item">
+                <a class="link" th:href="@{/user/my}">
+                    <i class="icon fa-solid fa-user"></i>
+                    <span class="text">마이쿠팡</span>
+                </a>
+            </li>
+            <li class="item">
+                <a class="link" th:href="@{/shopping/cart}">
+                    <i class="icon fa-solid fa-cart-shopping"></i>
+                    <span class="text">장바구니</span>
+                    <span class="count">0</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</header>
+</body>
+</html>

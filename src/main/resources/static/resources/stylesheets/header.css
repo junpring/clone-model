@@ -1,0 +1,132 @@
+
+body > .header {
+    width: 100%;
+    align-items: center;
+    border-bottom: 0.0625rem solid rgb(229, 229, 229);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+body > .header > .top-bar {
+    width: 100%;
+    align-items: center;
+    background-color: rgb(239, 239, 239);
+    display: flex;
+    flex-direction: column;
+    font-size: 0.75rem;
+    justify-content: flex-start;
+    padding: 0.5rem 0;
+}
+
+body > .header > .top-bar > .list {
+    width: var(--content-max-width);
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+body > .header > .top-bar > .list > .spring {
+    flex: 1;
+}
+
+body > .header > .top-bar > .list > .item + .item {
+    margin-left: 0.75rem;
+}
+
+body > .header > .search {
+    width: var(--content-max-width);
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2rem 0;
+}
+
+body > .header > .search > .logo-container > .logo {
+    height: 2.5rem;
+}
+
+body > .header > .search > .search-form {
+    left: 50%;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: absolute;
+    transform: translateX(-50%);
+}
+body > .header > .search > .search-form > label >.search-select {
+    border: 0.125rem solid rgb(66, 132, 243);
+    font-size: 1rem;
+    padding: 0.7rem 2rem 0.7rem 1rem;
+}
+
+body > .header > .search > .search-form > .keyword-input-container > .keyword-input {
+    width: 26rem;
+    border: 0.125rem solid rgb(66, 132, 243);
+    border-left: none;
+    font-size: 1rem;
+    padding: 0.7rem 3rem 0.7rem 1rem;
+}
+
+body > .header > .search > .search-form > .search-button {
+    top: 50%;
+    right: 1rem;
+    appearance: none;
+    background-color: unset;
+    border: none;
+    cursor: pointer;
+    margin: unset;
+    padding: unset;
+    position: absolute;
+    transform: translateY(-50%);
+}
+
+body > .header > .search > .search-form > .search-button > .icon {
+    color: rgb(66, 132, 243);
+    font-size: 1.125rem;
+}
+
+body > .header > .search > .my {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+body > .header > .search > .my > .item + .item {
+    margin-left: 1.25rem;
+}
+
+body > .header > .search > .my > .item > .link {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+body > .header > .search > .my > .item > .link > .icon {
+    color: rgb(85, 85, 85);
+    font-size: 1.5rem;
+    margin-bottom: 0.425rem;
+}
+
+body > .header > .search > .my > .item > .link > .count {
+    top: -0.625rem;
+    right: 0.125rem;
+    height: 1.25rem;
+    align-items: center;
+    background-color: rgb(66, 132, 243);
+    border-radius: 10rem;
+    color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: row;
+    font-size: 0.7rem;
+    font-weight: 600;
+    justify-content: center;
+    padding: 0 0.375rem;
+    position: absolute;
+}

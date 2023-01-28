@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>회원가입</title>
+    <link th:href="@{/resources/stylesheets/common.css}" rel="stylesheet">
+    <link th:href="@{/user/resources/stylesheet/register.css}" rel="stylesheet">
+
+    <script th:if="${registerVo != null && registerVo.getResult() == T(io.junpring.coupang.enums.member.user.RegisterResult).DUPLICATE}">
+        alert('해당 이메일은 이미 사용중입니다.');
+        window.history.back();
+    </script>
+
+    <script th:if="${registerVo != null && registerVo.getResult() == T(io.junpring.coupang.enums.member.user.RegisterResult).FAILURE}">
+        alert('알 수 없는 이유로 회원가입에 실패하였습니다.\n 잠시 후 다시 시도해주세요.');
+        window.history.back();
+    </script>
+
+    <script th:if="${registerVo != null && registerVo.getResult() == T(io.junpring.coupang.enums.member.user.RegisterResult).SUCCESS}">
+        alert('회원가입에 성공하셨습니다.');
+        window.location.href = '/';
+    </script>
+
+
+    <script src="https://kit.fontawesome.com/c5c7df7a64.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<!--<a th:text="T(java.lang.Math).PI" href=""></a>-->
+<form class="register-form" method="post">
+    <a class="logo-container" th:href="@{/}">
+        <img alt="Coupang" class="logo" th:src="@{/resources/images/logo.png}">
+    </a>
+    <span class="tt">회원 정보를 입력해주세요.</span>
+    <label class="input-container">
+        <i class="icon fa-solid fa-envelope"></i>
+        <span hidden>이메일</span>
+        <input autofocus class="input" maxlength="50" name="email" placeholder="아이디(이메일)" type="email">
+    </label>
+    <label class="input-container">
+        <i class="icon fa-solid fa-lock"></i>
+        <span hidden>비밀번호</span>
+        <input class="input" maxlength="50" name="password" placeholder="비밀번호" type="password">
+    </label>
+    </label>
+    <label class="input-container">
+        <i class="icon fa-solid fa-unlock"></i>
+        <span hidden>비밀번호 확인</span>
+        <input class="input" maxlength="50" placeholder="비밀번호 확인" type="password">
+    </label>
+    </label>
+    <label class="input-container">
+        <i class="icon fa-solid fa-user"></i>
+        <span hidden>이름</span>
+        <input class="input" maxlength="11" name="name" placeholder="이름" type="text">
+    </label>
+    </label>
+    <label class="input-container">
+        <i class="icon fa-solid fa-mobile-screen"></i>
+        <span hidden>휴대폰 번호</span>
+        <input class="input" maxlength="11" name="contact" placeholder="휴대폰 번호" type="text">
+    </label>
+    <input class="button register" type="submit" value="동의하고 가입하기">
+    <div class="line"></div>
+    <span class="copyright">&copy;Coupang Corp. All rights reserved.</span>
+</form>
+</body>
+</html>

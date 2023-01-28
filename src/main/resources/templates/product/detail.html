@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="userEntity" type="io.junpring.coupang.entities.member.UserEntity"*/-->
+<!--/*@thymesVar id="stock" type="io.junpring.coupang.entities.product.StockEntity"*/-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title th:text="${'쿠팡 ! = ' + productDto.getTitle() == null ? '존재하지 않는 상품' : productDto.getTitle()}"></title>
+    <link th:href="@{/resources/stylesheets/common.css}" rel="stylesheet">
+    <link th:href="@{/product/resources/stylesheets/detail.css}" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"/>
+
+    <script defer th:src="@{/resources/libraries/ckeditor/ckeditor.js}"></script>
+    <script defer th:src="@{/product/resources/scripts/add.js}"></script>
+
+    <script th:if="${productDto == null && productDto.getTitle() == null}">
+        alert('상품 존재 X');
+        window.history.back();
+    </script>
+    <script th:src="@{/product/resources/scripts/detail.js}" defer></script>
+    <script src="https://kit.fontawesome.com/c5c7df7a64.js" crossorigin="anonymous"></script>
+
+</head>
+<body th:if="${productDto.getTitle() != null}">
+<th:block th:replace="~{fragments/header.html :: content}"></th:block>
+<main class="main">
+    <section class="top">
+        <section class="left">
+            <div class="no-image" th:if="${productDto.getThumbnailId() == null}">썸네일이 등록되지 않았습니다.</div>
+            <img class="img"
+                 th:if="${productDto.getThumbnailId() != null}"
+                 th:src="@{'/product/detail/thumbnail?id=' + ${productDto.getThumbnailId()}}">
+            <form class="thumbnail-form" enctype="multipart/form-data" method="post"
+                  th:action="@{/product/detail/thumbnail/add}"
+                  th:if="${userEntity != null && userEntity.isAdmin() == true}">
+                <input name="productIndex" type="hidden" th:value="${productDto.getIndex()}">
+                <input name="thumbnail" type="file" accept="image/png, image/jpeg">
+                <input type="submit" value="상품 이미지 등록">
+                <a class="delete-button"
+                   th:href="@{/product/detail/thumbnail/delete (id=${productDto.getThumbnailId()}, pid=${productDto.getIndex()})}"
+                   th:if="${productDto.getThumbnailId() != null}">삭제</a>
+            </form>
+        </section>
+        <section th:class="${productDto.getCount() == 0 ? 'right sold-out' : 'right'}">
+            <span class="title" th:text="${productDto.getTitle()}"></span>
+            <span class="stars five">
+                <span class="star-container" th:if="${productDto.getReviewCount () > 0}">
+                        <span class="stars gray">
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                        </span>
+                        <span class="stars yellow"
+                              th:style="${'width: ' + (productDto.getReviewRate() / 5 * 100) + '%'}">
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                        </span>
+                    </span>
+                <a class="count" href="#revie
+                w"
+                   th:text="${#numbers.formatInteger(productDto.getReviewCount(), 0, 'COMMA') + '개 상품평'}"
+                   th:if="${productDto.getReviewCount() > 0}">12,31개 상품평</a>
+            </span>
+            <span class="price-container">
+                <span class="price" th:text="${#numbers.formatInteger(productDto.getPrice(), 3, 'COMMA' )}"></span>
+                <span class="won">원</span>
+                <img alt="로켓배송" class="rocket" th:src="@{/resources/images/rocket.png}"
+                     th:if="${productDto.getDelivery().equals('rocket')}">
+                    <img alt="로켓프레시" class="rocket" th:src="@{/resources/images/rocket-fresh.png}"
+                         th:if="${productDto.getDelivery().equals('rocketFresh')}">
+            </span>
+            <!--오류 span 딜리버리 컨테이너-->
+            <span class="delivery-container" th:with="dt=${#dates.createNow()}">
+                <span class="fee" th:if="${productDto.getDelivery().equals('normal')}">배송비 3,000원</span>
+                <span class="fee"
+                      th:if="${productDto.getDelivery().equals('rocket') || productDto.getDelivery().equals('rocketFresh')}">무료배송</span>
+
+                <span class="due" style="color: black;"
+                      th:if="${productDto.getDelivery().equals('normal') && productDto.getCount() > 0}"
+                      th:with="tomorrow = ${T(org.apache.commons.lang3.time.DateUtils).addDays(dt, 2)}"
+                      th:text="${#dates.format(tomorrow, 'M/d') + '(' + #dates.dayOfWeekName(tomorrow).substring(0, 1) + ') 도착 예정'}"></span>
+                <span class="due"
+                      th:if="${productDto.getDelivery().equals('rocket') && productDto.getCount() > 0}"
+                      th:with="tomorrow = ${T(org.apache.commons.lang3.time.DateUtils).addDays(dt, 1)}"
+                      th:text="${#dates.format(tomorrow, 'M/d') + '(' + #dates.dayOfWeekName(tomorrow).substring(0, 1) + ') 도착 보장'}"></span>
+                <span class="due"
+                      th:if="${productDto.getDelivery().equals('rocketFresh') && productDto.getCount() > 0}"
+                      th:with="tomorrow = ${T(org.apache.commons.lang3.time.DateUtils).addDays(dt, 1)}"
+                      th:text="${#dates.format(tomorrow, 'M/d') + '(' + #dates.dayOfWeekName(tomorrow).substring(0, 1) + ') 새벽 도착 보장'}"></span>
+            </span>
+            <form class="order-container" method="post" onsubmit="return confirm('정말로 해당 상품을 구매할까요?')"
+                  th:action="@{/shopping/order}">
+                <label class="quantity-container" th:if="${productDto.getCount() > 0}">
+                    <span hidden>개수</span>
+                    <input class="quantity-input" id="quantityInput" max="99" min="1" name="count" type="number"
+                           value="1">
+                </label>
+                <input id="productIndexInput" type="hidden" name="pid" th:value="${productDto.getIndex()}">
+                <a class="button cart" href="#" id="cartButton" th:if="${productDto.getCount() > 0}">장바구니 넣기</a>
+                <input class="button order" type="submit" value="바로 구매하기" th:if="${productDto.getCount() > 0}">
+                <a class="button sold-out" th:if="${productDto.getCount() == 0}">일시 품절</a>
+            </form>
+        </section>
+    </section>
+    <section class="admin">
+        <h2 class="title" th:if="${userEntity != null && userEntity.isAdmin()}">상품 관리</h2>
+        <form th:action="@{/product/stock/add}" class="stock-container" method="post">
+            <input name="productIndex" type="hidden" th:value="${productDto.getIndex()}">
+            <table class="history">
+                <thead>
+                <tr>
+                    <th>순번</th>
+                    <th>일시</th>
+                    <th>구문</th>
+                    <th>수량</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="stock : ${stockEntites}">
+                    <td th:text="${stock.getIndex()}"></td>
+                    <td th:text="${#dates.format(stock.getCreatedAt(), 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${stock.getCount() < 0 ? '출고' : '입고'}"></td>
+                    <td th:text="${#numbers.formatInteger((stock.getCount() < 0 ? stock.getCount() * -1 : stock.getCount()), 0, 'COMMA')}">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <select class="type-select" name="type">
+                            <option value="in" selected>입고</option>
+                            <option value="out" selected>출고</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input class="count-input" max="999" min="1" name="count" step="1" type="number" value="1">
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="3">총 재고</th>
+                    <th th:text="${#numbers.formatInteger(productDto.getCount(), 0, 'COMMA')}">4</th>
+                </tr>
+                </tfoot>
+            </table>
+            <div class="button-container">
+                <a class="button yellow" th:href="@{/product/modify (pid=${productDto.getIndex()})}">상품 수정</a>
+                <a class="button red" th:href="@{/product/delete (pid=${productDto.getIndex()})}">상품 삭제</a>
+                <span class="spring"></span>
+                <input class="button blue" type="submit" value="입/출고 내역 저장">
+            </div>
+        </form>
+    </section>
+    <section class="body">
+        <h2 class="title">상품 상세</h2>
+        <section class="content" th:utext="${productDto.getContent()}"></section>
+    </section>
+    <sectionq class="review" id="review">
+        <h2 class="title" th:text="${'상품 리뷰 (' + #numbers.formatInteger(productDto.getReviewCount(), 0 ,'COMMA') + ')'}">상품 리뷰</h2>
+        <div class="review" th:each="reviewEntity : ${reviewEntities}">
+            <span class="email" th:text="${reviewEntity.getUserEmail()}"></span>
+            <span class="star-container">
+                    <span class="stars gray">
+                        <i class="star fa-solid fa-star"></i>
+                        <i class="star fa-solid fa-star"></i>
+                        <i class="star fa-solid fa-star"></i>
+                        <i class="star fa-solid fa-star"></i>
+                        <i class="star fa-solid fa-star"></i>
+                    </span>
+                    <span class="stars yellow"
+                          th:style="${'width: ' + (reviewEntity.getRate()  * 100 / 5) + '%'}">
+                        <i class="star fa-solid fa-star"></i>
+                        <i class="star fa-solid fa-star"></i>
+                        <i class="star fa-solid fa-star"></i>
+                        <i class="star fa-solid fa-star"></i>
+                        <i class="star fa-solid fa-star"></i>
+                    </span>
+                </span>
+            <span class="comment" th:text="${reviewEntity.getComment()}"></span>
+        </div>
+    </sectionq>
+</main>
+</form>
+</body>
+</html>

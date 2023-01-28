@@ -1,0 +1,42 @@
+body > .title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+body > .subtitle {
+    font-size: 1.125rem;
+    margin-bottom: 3rem;
+}
+
+body > .buttons {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+body > .buttons > .button {
+    width: 10rem;
+    border-radius: 0.5rem;
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    text-align: center;
+}
+
+body > .buttons > .button + .button {
+    margin-left: 0.75rem;
+}
+
+body > .buttons > .button.back {
+    border: 0.125rem solid rgb(66, 132, 243);
+    color: rgb(66, 132, 243);
+}
+
+body > .buttons > .button.order {
+    background-color: rgb(66, 132, 243);
+    border: 0.125rem solid rgb(66, 132, 243);
+    color: rgb(255, 255, 255);
+}

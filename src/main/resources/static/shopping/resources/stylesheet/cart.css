@@ -1,0 +1,149 @@
+@charset "UTF-8";
+
+body > .logo-container {
+    width: var(--content-max-width);
+    margin: 2rem 0 1rem 0;
+}
+
+body > .logo-container > .logo {
+    height: 2.5rem;
+}
+
+body > table {
+    width: var(--content-max-width);
+    border-collapse: collapse;
+}
+
+body > table > thead th,
+body > table > tfoot td {
+    background-color: rgb(250, 250, 250);
+    border-top: 0.0625rem solid rgb(221, 221, 221);
+    border-bottom: 0.0625rem solid rgb(221, 221, 221);
+    padding: 0.75rem;
+    white-space: nowrap;
+}
+
+body > table > tbody .thumbnail {
+    height: 6rem;
+    margin: 1rem 2rem 1rem 0;
+}
+
+body > table > tbody .title {
+    border-bottom: 0.0625rem solid rgb(221, 221, 221);
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-bottom: 0.625rem;
+    padding-bottom: 0.625rem;
+}
+
+body > table > tbody .delete {
+    background-color: rgb(225, 25, 25);
+    border-radius: 0.25rem;
+    color: rgb(255, 255, 255);
+    padding: 0.25rem 0.5rem;
+}
+
+body > table > tbody .detail {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-right: 0.5rem;
+}
+
+body > table > tbody .detail > * + * {
+    margin-left: 0.5rem;
+}
+
+body > table > tbody .detail > .spring {
+    flex: 1;
+}
+
+body > table > tbody .rocket {
+    height: 1.125rem;
+    margin-top: 0.25rem;
+}
+
+body > table > tbody td {
+    border-bottom: 0.0625rem solid rgb(221, 221, 221);
+}
+
+body > table > tbody td.spaced {
+    border: 0.0625rem solid rgb(221, 221, 221);
+    border-right: none;
+    padding: 0.5rem 1rem;
+    text-align: center;
+}
+
+body > table > tfoot td {
+    padding: 1.5rem;
+}
+
+body > table > tfoot .wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+body > table > tfoot .value {
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+body > table > tfoot .sign {
+    top: 0.0625rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    align-items: center;
+    background-color: rgb(200, 200, 200);
+    border-radius: 50%;
+    box-sizing: border-box;
+    color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: row;
+    font-size: 1.25rem;
+    font-weight: 800;
+    justify-content: center;
+    margin: 0 0.5rem;
+    padding-bottom: 0.3rem;
+    position: relative;
+}
+
+body > table > tfoot .value:last-child {
+    font-size: 1.125rem;
+}
+
+body > .buttons {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 3rem 0;
+}
+
+body > .buttons > .button {
+    width: 10rem;
+    border-radius: 0.5rem;
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    text-align: center;
+}
+
+body > .buttons > .button + .button {
+    margin-left: 0.75rem;
+}
+
+body > .buttons > .button.back {
+    border: 0.125rem solid rgb(66, 132, 243);
+    color: rgb(66, 132, 243);
+}
+
+body > .buttons > .button.order {
+    background-color: rgb(66, 132, 243);
+    border: 0.125rem solid rgb(66, 132, 243);
+    color: rgb(255, 255, 255);
+}
+
+
+

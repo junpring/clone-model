@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.junpring.coupang.mappers.IUserMapper">
+    <insert id="insertSession"
+            parameterType="io.junpring.coupang.entities.member.SessionEntity">
+        INSERT INTO `coupang_member`.`sessions`(`created_at`, `updated_at`, `expires_at`, `expired_flag`, `user_email`,
+                                                `key`, `ua`)
+        VALUES (#{createdAt}, #{updatedAt}, #{expiresAt}, #{isExpired}, #{userEmail}, #{key}, #{ua})
+    </insert>
+    <!-- insert resultType No!  -->
+
+    <insert id="insertUser"
+            parameterType="io.junpring.coupang.entities.member.UserEntity">
+        INSERT INTO `coupang_member`.`user` (`email`, `password`, `name`, `contact`, `admin_flag`)
+        VALUES (#{email}, #{password}, #{name}, #{contact}, #{isAdmin})
+    </insert>
+    <select id="selectUser"
+            parameterType="io.junpring.coupang.entities.member.UserEntity"
+            resultType="io.junpring.coupang.entities.member.UserEntity">
+        SELECT `email`      AS `email`,
+               `password`   AS `password`,
+               `name`       AS `name`,
+               `contact`    AS `contact`,
+               `admin_flag` AS `isAdmin`
+        FROM `coupang_member`.`user`
+        WHERE `email` = #{email}
+          AND `password` = #{password}
+        LIMIT 1
+    </select>
+    <!--
+      selectUser : email, password가 같으면 회원정보를  LIMIT 1만큼 select
+        - resultType : 조회 결과 값을 저장하기 위한 데이터 타입(데이터 하나에 대한 타입 지정)
+        - parameterType : 전달받은 파라이터 데이터 타입 지정(선택적)
+      -->
+
+    <select id="selectUserByEmail"
+            resultType="io.junpring.coupang.entities.member.UserEntity">
+        SELECT `email`      AS `email`,
+               `password`   AS `password`,
+               `name`       AS `name`,
+               `contact`    AS `contact`,
+               `admin_flag` AS `isAdmin`
+        FROM `coupang_member`.`user`
+        WHERE `email` = #{email}
+        LIMIT 1
+    </select>
+
+
+
+    <select id="selectUserCountBy"
+            resultType="_int">
+        SELECT COUNT(0)
+        FROM `coupang_member`.`user`
+        WHERE email = #{email}
+    </select>
+
+    <select id="selectSessionByKey"
+            resultType="io.junpring.coupang.entities.member.SessionEntity">
+        SELECT `created_at`   AS `createdAt`,
+               `updated_at`   AS `updatedAt`,
+               `expires_at`   AS `expiresAt`,
+               `expired_flag` AS `isExpired`,
+               `user_email`   AS `userEmail`,
+               `key`          AS `key`,
+               `ua`           AS `ua`
+        FROM `coupang_member`.`sessions`
+        WHERE `key` = #{key}
+          AND expires_at > NOW()
+          AND expired_flag = FALSE
+        LIMIT 1
+    </select>
+
+    <update id="updateSession"
+            parameterType="io.junpring.coupang.entities.member.SessionEntity">
+        UPDATE `coupang_member`.`sessions`
+        SET `updated_at`   = #{updatedAt},
+            `expires_at`   = #{expiresAt},
+            `expired_flag` = #{isExpired}
+        WHERE `key` = #{key}
+        LIMIT 1
+    </update>
+
+    <update id="updateSessionExpiredByEmail">
+        UPDATE `coupang_member`.`sessions`
+        SET `expired_flag` = TRUE
+        WHERE `user_email` = #{email}
+          AND `expires_at` > NOW()
+          AND `expired_flag` = FALSE
+    </update>
+    <!--updateSessionExpiredByEmail
+        3. expired_flag를 true로 set
+        2. user_email과 @Param(value = "email") String email)로 받은 값과 같은 값을
+        1. (조건) 만료시간이 현재시간 보다 크고 && `expired_flag`가 FALSE와 같을 시
+        (expired_flag는 기본값이 false 이다.)
+    -->
+</mapper>

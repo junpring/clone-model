@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="userEntity" type="io.junpring.coupang.entities.member.UserEntity"*/-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>쿠팡! - 상품 수정</title>
+    <link th:href="@{/resources/stylesheets/common.css}" rel="stylesheet">
+    <link th:href="@{/product/resources/stylesheets/modify.css}" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"/>
+    <script th:if="${detailVo == null || detailVo.getResult().name().equals('NOT_FOUND')}"></script>
+    <script src="https://kit.fontawesome.com/c5c7df7a64.js" crossorigin="anonymous"></script>
+    <script defer th:src="@{/resources/libraries/ckeditor/ckeditor.js}"></script>
+    <script defer th:src="@{/product/resources/scripts/add.js}"></script>
+
+</head>
+<body>
+<th:block th:replace="~{fragments/header.html :: content}"></th:block>
+<form class="main" method="post">
+    <input type="hidden" name="thumbnailId"
+           th:if="${detailVo.getThumbnailId() != null}"
+           th:value="${detailVo.getThumbnailId()}">
+    <!--   위에 중요 ! 서비스 로직 줄일 수 있음 -->
+    <label class="label">
+        <span class="hint">제목</span>
+        <input autofocus class="input" maxlength="100" name="title" placeholder="상품 제목을 입력해주세요." type="text"
+               th:value="${detailVo.getTitle()}">
+    </label>
+    <label class="label">
+        <span class="hint">가격</span>
+        <input class="input" min="100" max="99999990" name="price" placeholder="판매 가격을 입력해주세요." step="10" type="number"
+               th:value="${detailVo.getPrice()}">
+    </label>
+    <label class="label">
+        <span class="hint">배송</span>
+        <label class="label">
+            <input checked class="input" name="delivery" type="radio" value="normal"
+                   th:checked="${detailVo.getDelivery().equals('normal')}">
+            <span class="checker"></span>
+            <span class="text">일반</span>
+        </label>
+        <label class="label">
+            <input class="input" name="delivery" type="radio" value="rocket"
+                   th:checked="${detailVo.getDelivery().equals('rocket')}">
+            <span class="checker"></span>
+            <span class="text">로켓</span>
+        </label>
+        <label class="label">
+            <input class="input" name="delivery" type="radio" value="rocketFresh"
+                   th:checked="${detailVo.getDelivery().equals('rocketFresh')}">
+            <span class="checker"></span>
+            <span class="text">로켓프레시</span>
+        </label>
+    </label>
+    <label class="label">
+        <span class="hint">카테고리</span>
+        <select class="category-select" name="categoryIndex">
+            <option th:each="category : ${categoryEntities}" th:text="${category.getName()}"
+                    th:value="${category.getIndex()}" th:selected="${category.getIndex() == 1}"></option>
+        </select>
+    </label>
+    <textarea class="editor" name="content" id="editor" th:text="${detailVo.getContent()}"></textarea>
+    <div class="buttons">
+        <input class="button white" type="button" value="돌아가기"
+               onclick="if (confirm('정말로 돌아갈까요? 작성하신 정보가 모두 유실됩니다.')) {window.history.back();}">
+        <input class="button blue" type="submit" value="상품 등록하기">
+    </div>
+</form>
+</body>
+</html>

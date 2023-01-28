@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="userEntity" type="io.junpring.coupang.entities.member.UserEntity"*/-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>쿠팡!</title>
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css">
+    <link th:href="@{/resources/stylesheets/common.css}" rel="stylesheet">
+    <link th:href="@{/resources/stylesheets/index.css}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/597b19c344.js" crossorigin></script>
+</head>
+<body>
+<th:block th:replace="~{fragments/header.html :: content}"></th:block>
+<main class="main">
+    <aside class="aside">
+        <a th:href="@{/ (category=0)}" class="category">전체 보기</a>
+        <a th:each="category : ${categoryEntities}" th:text="${category.getName()}" th:href="@{/ (category=${category.getIndex()})}" class="category"></a>
+    </aside>
+    <section class="content">
+        <section class="controller">
+            <a class="link selected" href="#">이름순</a>
+            <a class="link" href="#">낮은가격순</a>
+            <a class="link" href="#">높은가격순</a>
+            <span class="spring"></span>
+            <a class="link" th:href="@{/product/add}" th:if="${userEntity != null && userEntity.isAdmin() == true}">상품 등록</a>
+        </section>
+        <section class="products">
+            <div class="no-product" th:if="${productDtos.length == 0}">표시할 상품이 없습니다.</div>
+            <a th:each="product : ${productDtos}"
+               th:href="@{'/product/detail/' + ${product.getIndex()}}"
+               th:with="dt = ${#dates.createNow()}"
+               th:class="${product.getCount() > 0 ? 'product' : 'product sold-out'}">
+                <img alt="상품이미지" class="image"
+                     th:if="${product.getThumbnailId() != null}"
+                     th:src="@{/product/detail/thumbnail (id=${product.getThumbnailId()})}">
+                <div class="no-image" th:if="${product.getThumbnailId() == null}">상품 이미지가 등록되지 않았습니다.</div>
+                <span class="title" th:text="${product.getTitle()}"></span>
+                <span class="price">
+                    <span class="number" th:text="${#numbers.formatInteger(product.getPrice(), 3, 'COMMA')}"></span>
+                    <span class="won">원</span>
+                    <img alt="로켓배송" class="rocket" th:src="@{/resources/images/rocket.png}"
+                         th:if="${product.getDelivery().equals('rocket')}">
+                    <img alt="로켓프레시" class="rocket" th:src="@{/resources/images/rocket-fresh.png}"
+                         th:if="${product.getDelivery().equals('rocketFresh')}">
+                </span>
+                <span class="due" style="color: black; font-weight: 500;" th:if="${product.getCount() == 0}">임시품절</span>
+                <span class="due" style="color: black;"
+                      th:if="${product.getDelivery().equals('normal') && product.getCount() > 0}"
+                      th:with="tomorrow = ${T(org.apache.commons.lang3.time.DateUtils).addDays(dt, 2)}"
+                      th:text="${#dates.format(tomorrow, 'M/d') + '(' + #dates.dayOfWeekName(tomorrow).substring(0, 1) + ') 도착 예정'}"></span>
+                <span class="due" th:if="${product.getDelivery().equals('rocket') && product.getCount() > 0}"
+                      th:with="tomorrow = ${T(org.apache.commons.lang3.time.DateUtils).addDays(dt, 1)}"
+                      th:text="${#dates.format(tomorrow, 'M/d') + '(' + #dates.dayOfWeekName(tomorrow).substring(0, 1) + ') 도착 보장'}"></span>
+                <span class="due" th:if="${product.getDelivery().equals('rocketFresh') && product.getCount()> 0}"
+                      th:with="tomorrow = ${T(org.apache.commons.lang3.time.DateUtils).addDays(dt, 1)}"
+                      th:text="${#dates.format(tomorrow, 'M/d') + '(' + #dates.dayOfWeekName(tomorrow).substring(0, 1) + ') 새벽 도착 보장'}"></span>
+                <span class="stars five" th:if="${product.getReviewCount() > 0}">
+                    <span class="star-container">
+                        <span class="stars gray">
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                        </span>
+                        <span class="stars yellow" th:style="${'width: ' + (product.getReviewRate() / 5 * 100) + '%'}">
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                            <i class="star fa-solid fa-star"></i>
+                        </span>
+                    </span>
+                    <span class="review-count" th:text="${'(' + #numbers.formatInteger(product.getReviewCount(), 0, 'COMMA') + ')'}">(1,234)</span>
+                </span>
+            </a>
+        </section>
+
+
+
+
+        <div class="page">
+            <a th:href="@{'/?page=' + ${productPageVo.getMinPage()}}"
+               th:if="${productPageVo.getRequestPage() > productPageVo.getMinPage()}">
+                <i class="fa-solid fa-angles-left"></i>
+            </a>
+            <a th:href="@{'/?page=' + ${productPageVo.getRequestPage() - 1}}"
+               th:if="${productPageVo.getRequestPage() > productPageVo.getMinPage()}"><i
+                    class="fa-solid fa-angle-left"></i>
+            </a>
+            <th:block th:each="page : ${#numbers.sequence(productPageVo.getStartPage(), productPageVo.getEndPage())}">
+                <!--${#numbers.sequence(1 , 9) page로 1 ~ 9까지 반복-->
+                <a th:href="@{'/?page=' + ${page}}"
+                   th:text="${page}"
+                   th:style="${page == productPageVo.getRequestPage()} ? 'border: 1px solid rgb(3, 17, 43)': ''">
+                </a>
+            </th:block>
+
+            <a th:href="@{'/?page=' + ${productPageVo.getRequestPage() + 1}}"
+               th:if="${productPageVo.getRequestPage() < productPageVo.getMaxPage()}">
+                <i class="fa-solid fa-angle-right"></i>
+            </a>
+            <a th:href="@{'/?page=' + ${productPageVo.getMaxPage()}}"
+               th:if="${productPageVo.getRequestPage() < productPageVo.getMaxPage()}">
+                <i class="fa-solid fa-angles-right"></i>
+            </a>
+        </div>
+    </section>
+
+</main>
+</body>
+</html>

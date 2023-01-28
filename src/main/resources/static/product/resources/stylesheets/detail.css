@@ -1,0 +1,391 @@
+@charset "UTF-8";
+
+body > .main {
+    width: var(--content-max-width);
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 1rem;
+    padding-bottom: 3rem;
+}
+
+body > .main > .top {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+body > .main > .top > .left {
+    width: calc(var(--content-max-width) * 0.4);
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-right: 1.5rem;
+}
+
+body > .main > .top > .left > .no-image {
+    width: calc(var(--content-max-width) * 0.4);
+    height: calc(var(--content-max-width) * 0.4);
+    background-color: rgb(220, 220, 220);
+    align-items: center;
+    color: rgb(140, 140, 140);
+    display: flex;
+    flex-direction: column;
+    font-size: 1.125rem;
+    justify-content: center;
+}
+
+body > .main > .top > .left > .thumbnail-form {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 0.5rem;
+}
+
+body > .main > .top > .left > .thumbnail-form > input {
+    width: auto;
+}
+
+body > .main > .top > .left > .thumbnail-form > input[type=submit] {
+    background-color: rgb(66, 132, 243);
+    border-radius: 0.125rem;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+}
+
+body > .main > .top > .left > .thumbnail-form > .delete-button {
+    background-color: rgb(243, 66, 66);
+    border-radius: 0.125rem;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    margin-left: 0.25rem;
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+}
+
+body > .main > .top > .right {
+    align-items: stretch;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+body > .main > .top > .right > .title {
+    font-size: 1.375rem;
+    font-weight: 500;
+    margin-bottom: 0.125rem;
+    text-align: justify;
+}
+
+body > .main > .top > .right > .stars {
+    border-bottom: 0.0625rem solid rgb(230, 230, 230);
+    color: rgb(205, 205, 205);
+    letter-spacing: -0.125rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+}
+
+body > .main > .top > .right > .stars {
+    color: rgb(205, 205, 205);
+    letter-spacing: -0.125rem;
+}
+
+body > .main > .top > .right > .stars > .star-container {
+    position: relative;
+}
+
+body > .main > .top > .right > .stars > .star-container > .stars {
+    letter-spacing: -0.125rem;
+    display: inline-block;
+}
+
+body > .main > .top > .right > .stars > .star-container > .stars.gray {
+    position: relative;
+}
+
+body > .main > .top > .right > .stars > .star-container > .stars.yellow {
+    left: 0;
+    width: 50%;
+    color: rgb(255, 151, 0);
+    position: absolute;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+body > .main > .top > .right > .stars > .count {
+    color: rgb(66, 132, 243);
+    font-size: 0.8rem;
+    letter-spacing: normal;
+    margin-left: 0.25rem;
+}
+
+body > .main > .top > .right > .price-container {
+    align-items: center;
+    border-bottom: 0.0625rem solid rgb(230, 230, 230);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+
+body > .main > .top > .right.sold-out > .price-container {
+    filter: grayscale(100%) opacity(25%);
+}
+
+body > .main > .top > .right > .price-container > .price {
+    color: rgb(174, 0, 0);
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+body > .main > .top > .right > .price-container > .won {
+    color: rgb(174, 0, 0);
+    font-size: 1.75rem;
+}
+
+body > .main > .top > .right > .price-container > .rocket {
+    height: 1rem;
+    margin-left: 0.75rem;
+}
+
+body > .main > .top > .right > .delivery-container {
+    align-items: flex-start;
+    border-bottom: 0.0625rem solid rgb(230, 230, 230);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+
+body > .main > .top > .right > .delivery-container > .fee {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+body > .main > .top > .right > .delivery-container > .due {
+    color: rgb(0, 137, 26);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+body > .main > .top > .right > .order-container {
+    align-items: stretch;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+body > .main > .top > .right > .order-container > * + * {
+    margin-left: 0.5rem;
+}
+
+body > .main > .top > .right > .order-container > .quantity-container {
+    align-items: stretch;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+body > .main > .top > .right > .order-container > .quantity-container > .quantity-input {
+    width: 5rem;
+    border: 0.0625rem solid rgb(200, 200, 200);
+    border-radius: 0.125rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+body > .main > .top > .right > .order-container > .button {
+    border-radius: 0.125rem;
+    flex: 1;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    user-select: none;
+}
+
+body > .main > .top > .right > .order-container > .button.cart {
+    border: 0.0625rem solid rgb(200, 200, 200);
+}
+
+body > .main > .top > .right > .order-container > .button.order {
+    background-color: rgb(66, 132, 243);
+    color: rgb(255, 255, 255);
+}
+
+body > .main > .top > .right > .order-container > .button.sold-out {
+    border: 0.0625rem solid rgb(200, 200, 200);
+    cursor: not-allowed;
+}
+
+body > .main > .admin,
+body > .main > .body,
+body > .main > .review {
+    margin: 1.5rem 0;
+}
+
+body > .main > .body img {
+    max-width: 100%;
+}
+
+body > .main > .admin > .title,
+body > .main > .body > .title,
+body > .main > .review > .title {
+    background-color: rgb(240, 240, 240);
+    border-top: 0.125rem solid rgb(60, 60, 60);
+    border-bottom: 0.0625rem solid rgb(200, 200, 200);
+    font-size: 1.375rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1.25rem;
+}
+
+body > .main > .admin > .stock-container {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+body > .main > .admin > .stock-container > .history {
+    border-collapse: collapse;
+    margin-bottom: 0.75rem;
+}
+
+body > .main > .admin > .stock-container > .history > caption {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    text-align: left;
+}
+
+body > .main > .admin > .stock-container > .history > thead > tr > th {
+    background-color: rgb(245, 245, 245);
+    border-top: 0.0625rem solid rgb(200, 200, 200);
+    border-bottom: 0.125rem solid rgb(160, 160, 160);
+    padding: 0.625rem 0.75rem;
+}
+
+body > .main > .admin > .stock-container > .history > tbody > tr:nth-child(even) {
+    background-color: rgb(245, 245, 245);
+}
+
+body > .main > .admin > .stock-container > .history > tbody > tr > td {
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+}
+
+body > .main > .admin > .stock-container > .history > tbody .type-select,
+body > .main > .admin > .stock-container > .history > tbody .count-input {
+    width: 5rem;
+    border: 0.0625rem solid rgb(230, 230, 230);
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+    padding: 0.5rem 1rem;
+    text-align: center;
+}
+
+body > .main > .admin > .stock-container > .history > tfoot > tr > * {
+    background-color: rgb(245, 245, 245);
+    border-top: 0.125rem solid rgb(160, 160, 160);
+    border-bottom: 0.0625rem solid rgb(200, 200, 200);
+    padding: 0.625rem 0.75rem;
+    text-align: center;
+}
+
+body > .main > .admin > .stock-container > .button-container {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+body > .main > .admin > .stock-container > .button-container > .spring {
+    flex: 1;
+}
+
+body > .main > .admin > .stock-container > .button-container > .button {
+    border-radius: 0.25rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    user-select: none;
+}
+
+body > .main > .admin > .stock-container > .button-container > .button + .button {
+    margin-left: 0.5rem;
+}
+
+body > .main > .admin > .stock-container > .button-container > .button:hover {
+    filter: brightness(105%);
+}
+
+body > .main > .admin > .stock-container > .button-container > .button:active {
+    filter: brightness(95%);
+}
+
+body > .main > .admin > .stock-container > .button-container > .button.red {
+    background-color: rgb(243, 66, 66);
+    color: rgb(255, 255, 255);
+}
+
+body > .main > .admin > .stock-container > .button-container > .button.yellow {
+    background-color: rgb(100, 175, 50);
+    color: rgb(255, 255, 255);
+}
+
+body > .main > .admin > .stock-container > .button-container > .button.blue {
+    background-color: rgb(66, 132, 243);
+    color: rgb(255, 255, 255);
+}
+
+body > .main > .admin > .stock-container > .button-container > input[type=submit] {
+    width: auto;
+}
+
+/*----------------*/
+
+body > .main > .review > .review {
+    align-items: flex-start;
+    border-bottom: 0.0625rem solid rgb(221, 221, 221);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+}
+
+body > .main > .review > .review > .email {
+    font-size: 1rem;
+    margin-bottom: 0.125rem;
+}
+
+body > .main > .review > .review > .star-container {
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+body > .main > .review > .review > .star-container > .stars {
+    display: inline-block;
+    letter-spacing: -0.125rem;
+}
+
+body > .main > .review > .review > .star-container > .stars.gray {
+    color: rgb(205, 205, 205);
+    position: relative;
+}
+
+body > .main > .review > .review > .star-container > .stars.yellow {
+    left: 0;
+    color: rgb(255, 151, 0);
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+}

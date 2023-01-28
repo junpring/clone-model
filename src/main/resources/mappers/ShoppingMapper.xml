@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.junpring.coupang.mappers.IShoppingMapper">
+    <delete id="deleteCartByEmailAndProductIndex">
+        DELETE
+        FROM `coupang_shopping`.`carts`
+        WHERE `user_email` = #{email}
+          AND `product_index` = #{productIndex}
+    </delete>
+
+    <insert id="insertCart"
+            parameterType="io.junpring.coupang.entities.shopping.CartEntity">
+        INSERT INTO `coupang_shopping`.`carts`(`user_email`, `product_index`, `count`)
+        VALUES (#{userEmail}, #{productIndex}, #{count})
+    </insert>
+
+    <insert id="insertReview"
+            parameterType="io.junpring.coupang.entities.shopping.ReviewEntity">
+        INSERT INTO `coupang_shopping`.`reviews`(`user_email`, `product_index`, `order_index`, `rate`, `comment`)
+        VALUES (#{userEmail}, #{productIndex}, #{orderIndex}, #{rate}, #{comment})
+    </insert>
+
+    <insert id="insertOrder"
+            parameterType="io.junpring.coupang.entities.shopping.OrderEntity">
+        INSERT INTO `coupang_shopping`.`orders` (`created_at`, `user_email`, `product_index`, `count`,
+                                                 `order_status_index`, `price_product`, `price_shipping`)
+        VALUES (#{createdAt}, #{userEmail}, #{productIndex}, #{count}, #{orderStatusIndex}, #{priceProduct},
+                #{priceShipping})
+    </insert>
+
+    <select id="selectCartsByEmail"
+            resultType="io.junpring.coupang.entities.shopping.CartEntity">
+        SELECT `index`         AS `index`,
+               `user_email`    AS `userEmail`,
+               `product_index` AS `productIndex`,
+               SUM(`count`)    AS `count`
+        FROM `coupang_shopping`.`carts`
+        WHERE `user_email` = #{email}
+        GROUP BY `product_index`
+    </select>
+
+    <select id="selectOrder"
+            resultType="io.junpring.coupang.entities.shopping.OrderEntity">
+        SELECT `index`              AS `index`,
+               `created_at`         AS `createdAt`,
+               `user_email`         AS `userEmail`,
+               `product_index`      AS `productIndex`,
+               `count`              AS `count`,
+               `order_status_index` AS `orderStatusIndex`,
+               `price_product`      AS `priceProduct`,
+               `price_shipping`     AS `priceShipping`
+        FROM `coupang_shopping`.`orders`
+        WHERE `index` = #{index}
+        LiMIT 1
+    </select>
+
+    <select id="selectOrders"
+            resultType="io.junpring.coupang.entities.shopping.OrderEntity">
+        SELECT `index`              AS `index`,
+               `created_at`         AS `createdAt`,
+               `user_email`         AS `userEmail`,
+               `product_index`      AS `productIndex`,
+               `count`              AS `count`,
+               `order_status_index` AS `orderStatusIndex`,
+               `price_product`      AS `priceProduct`,
+               `price_shipping`     AS `priceShipping`
+        FROM `coupang_shopping`.`orders`
+        ORDER BY `created_at` DESC
+    </select>
+
+    <select id="selectOrdersByEmail"
+            resultType="io.junpring.coupang.entities.shopping.OrderEntity">
+        SELECT `index`              AS `index`,
+               `created_at`         AS `createdAt`,
+               `user_email`         AS `userEmail`,
+               `product_index`      AS `productIndex`,
+               `count`              AS `count`,
+               `order_status_index` AS `orderStatusIndex`,
+               `price_product`      AS `priceProduct`,
+               `price_shipping`     AS `priceShipping`
+
+        FROM `coupang_shopping`.`orders`
+        WHERE `user_email` = #{email}
+        ORDER BY `created_at` DESC
+    </select>
+
+    <select id="selectOrderStatuses"
+            resultType="io.junpring.coupang.entities.shopping.OrderStatusEntity">
+        SELECT `index` AS `index`,
+               `text`  AS `text`
+        FROM `coupang_shopping`.`orders_statuses`
+        ORDER BY `index`
+    </select>
+
+    <select id="selectReviewsByProductIndex"
+            resultType="io.junpring.coupang.entities.shopping.ReviewEntity">
+        SELECT `index`         AS `index`,
+               `user_email`    AS `userEmail`,
+               `product_index` AS `productIndex`,
+               `order_index`   AS `orderIndex`,
+               `rate`          AS `rate`,
+               `comment`       AS `comment`
+        FROM `coupang_shopping`.`reviews`
+        WHERE `product_index` = #{productIndex}
+        ORDER BY `index`
+    </select>
+
+    <select id="selectReviewCountByOrderIndex"
+            resultType="_int">
+        SELECT COUNT(0)
+        FROM `coupang_shopping`.`reviews`
+        WHERE `order_index` = #{orderIndex}
+    </select>
+
+    <update id="updateOrder"
+            parameterType="io.junpring.coupang.entities.shopping.OrderEntity">
+        UPDATE `coupang_shopping`.`orders`
+        SET `created_at`         = #{createdAt},
+            `user_email`         = #{userEmail},
+            `product_index`      = #{productIndex},
+            `count`              = #{count},
+            `order_status_index` = #{orderStatusIndex},
+            `price_product`      = #{priceProduct},
+            `price_shipping`     = #{priceShipping}
+        WHERE `index` = #{index}
+        LIMIT 1
+    </update>
+</mapper>

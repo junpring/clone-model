@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.junpring.coupang.mappers.IProductMapper">
+    <delete id="deleteProduct"
+            parameterType="io.junpring.coupang.entities.product.ProductEntity">
+        DELETE
+        FROM `coupang_product`.`products`
+        WHERE `index` = #{index}
+        LIMIT 1
+    </delete>
+    <delete id="deleteThumbnail"
+            parameterType="io.junpring.coupang.entities.product.ThumbnailEntity">
+        DELETE
+        FROM `coupang_product`.`product_thumbnails`
+        WHERE id = #{id}
+        LIMIT 1
+    </delete>
+    <select id="selectCategories"
+            resultType="io.junpring.coupang.entities.product.CategoryEntity">
+        SELECT `index` AS `index`,
+               `name`  AS `name`
+        FROM `coupang_product`.`product_categorise`
+        ORDER BY `index`
+    </select>
+    <insert id="insertImage"
+            parameterType="io.junpring.coupang.entities.product.ImageEntity">
+        INSERT INTO `coupang_product`.`images` (`id`, `create_at`, `file_name`, `file_type`, `data`)
+        VALUES (#{id}, #{createAt}, #{fileName}, #{fileType}, #{data})
+    </insert>
+
+    <insert id="insertProduct"
+            useGeneratedKeys="true"
+            keyColumn="index"
+            keyProperty="index"
+            parameterType="io.junpring.coupang.entities.product.ProductEntity">
+        INSERT INTO `coupang_product`.`products` (`title`, `price`, `delivery`, `content`, `thumbnail_id`,
+                                                  `category_index`)
+        VALUES (#{title}, #{price}, #{delivery}, #{content}, #{thumbnailId}, #{categoryIndex})
+    </insert>
+    <!--mybatis를 사용해개발 하다가 insert한 데이터에 대한 key를 얻어야하는 경우가 생겼다. useGeneratedKeys-->
+    <insert id="insertStock"
+            parameterType="io.junpring.coupang.entities.product.StockEntity">
+        INSERT INTO `coupang_product`.`product_stocks`(`created_at`, `product_index`, `count`)
+        VALUES (#{createdAt}, #{productIndex}, #{count})
+    </insert>
+    <insert id="insertThumbnail"
+            parameterType="io.junpring.coupang.entities.product.ThumbnailEntity">
+        INSERT INTO `coupang_product`.`product_thumbnails` (`id`, `data`)
+        VALUES (#{id}, #{data})
+    </insert>
+
+    <select id="selectImage"
+            resultType="io.junpring.coupang.entities.product.ImageEntity">
+        SELECT `id`        AS `id`,
+               `create_at` AS `createAt`,
+               `file_name` AS `fileName`,
+               `file_type` AS `fileType`,
+               `data`      AS `data`
+        FROM `coupang_product`.`images`
+        WHERE `id` = #{id}
+        LIMIT 1
+    </select>
+
+    <select id="selectThumbnail"
+            resultType="io.junpring.coupang.entities.product.ThumbnailEntity">
+        SELECT `id`   AS `id`,
+               `data` AS `data`
+        FROM `coupang_product`.`product_thumbnails`
+        WHERE `id` = #{id}
+    </select>
+
+    <select id="selectProductByIndex"
+            resultType="io.junpring.coupang.entities.product.ProductEntity">
+        SELECT `index`          AS `index`,
+               `title`          AS `title`,
+               `price`          AS `price`,
+               `delivery`       AS `delivery`,
+               `content`        AS `content`,
+               `thumbnail_id`   AS `thumbnailId`,
+               `category_index` AS `categoryIndex`
+        FROM `coupang_product`.`products`
+        WHERE `index` = #{index}
+        LIMIT 1
+    </select>
+
+    <select id="selectProductStockCount"
+            parameterType="io.junpring.coupang.entities.product.ProductEntity"
+            resultType="_int">
+        SELECT IFNULL(SUM(`count`), 0)
+        FROM `coupang_product`.`product_stocks`
+        WHERE `product_index` = #{index}
+    </select>
+    <select id="selectProducts"
+            resultType="io.junpring.coupang.dtos.product.ProductDTO">
+        SELECT `product`.`index`                                   AS `index`,
+               `product`.`title`                                   AS `title`,
+               `product`.`price`                                   AS `price`,
+               `product`.`delivery`                                AS `delivery`,
+               `product`.`content`                                 AS `content`,
+               `product`.`thumbnail_id`                            AS `thumbnailId`,
+               `product`.`category_index`                          AS `categoryIndex`,
+               (SELECT SUM(`stock`.`count`)
+                FROM `coupang_product`.`product_stocks` AS `stock`
+                WHERE `product`.`index` = `stock`.`product_index`) AS `count`,
+               COUNT(`review`.`index`)                             AS `reviewCount`,
+               AVG(`review`.`rate`)                                AS `reviewRate`
+        FROM `coupang_product`.`products` AS `product`
+                 LEFT JOIN `coupang_shopping`.`reviews` AS `review`
+                           ON `product`.`index` = `review`.`product_index`
+        GROUP BY `product`.`index`
+        ORDER BY `product`.`index` DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <!-- IFNULL(SUM(`stock`.`count`), 0) : 레코드가 없는경우 SUM함수 사용시 null이 출력된다
+        이때, IFNULL함수를 사용하여 NULL일 경우 0처리를 해주면된다. (조인 하는 경우는 다른 테이블의 값도 같이 보여주기 위해!
+    -->
+    <select id="selectStocks"
+            resultType="io.junpring.coupang.entities.product.StockEntity">
+        SELECT `index`         AS `index`,
+               `created_at`    AS createdAt,
+               `product_index` AS productIndex,
+               `count`         AS `count`
+        FROM `coupang_product`.`product_stocks`
+        WHERE `product_index` = #{productIndex}
+        ORDER BY `index` DESC
+        LIMIT #{limit}
+    </select>
+
+    <update id="updateProduct"
+            parameterType="io.junpring.coupang.entities.product.ProductEntity">
+        UPDATE `coupang_product`.`products`
+        SET `title`          = #{title},
+            `price`          = #{price},
+            `delivery`       = #{delivery},
+            `content`        = #{content},
+            `thumbnail_id`   = #{thumbnailId},
+            `category_index` = #{categoryIndex}
+        WHERE `index` = #{index}
+        LIMIT 1
+    </update>
+    <!--페이징-->
+    <select id="selectProductCountTotal"
+            parameterType="io.junpring.coupang.entities.product.ProductEntity"
+            resultType="_int">
+        SELECT COUNT(0)
+        FROM `coupang_product`.`products`
+    </select>
+    <!--  search  -->
+    <select id="selectProductCountLikeAll"
+            resultType="_int">
+        SELECT COUNT(0)
+        FROM `coupang_product`.`products`
+        WHERE (`title` LIKE CONCAT('%', #{keyword}, '%')
+            OR `content` LIKE CONCAT('%', #{keyword}, '%'))
+    </select>
+</mapper>
