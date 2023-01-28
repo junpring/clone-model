@@ -44,6 +44,7 @@ public class UserController {
         this.shoppingService = shoppingService;
     }
 
+
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public ModelAndView getLogin(
             ModelAndView modelAndView
